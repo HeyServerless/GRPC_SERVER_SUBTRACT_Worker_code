@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  client:
+    image: my-client
+    environment:
+      - SERVER_ADDR=replica-0.pbft:50051
+    ports:
+      - "50051:50051"
+
+  worker:
+    image: my-worker
+
+  replica-0:
+    image: my-replica
+    environment:
+      - REPLICA_ID=0
+      - REPLICA_COUNT=3
+    ports:
+      - "50051"
+
+  replica-1:
+    image: my-replica
+    environment:
+      - REPLICA_ID=1
+      - REPLICA_COUNT=3
+
+  replica-2:
+    image: my-replica
+    environment:
+      - REPLICA_ID=2
+      - REPLICA_COUNT=3

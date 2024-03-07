@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package ADD;
+//  
+
+option go_package = "github.com/rajeshreddyt/GrpcServerSubtract";
+
+// service SubtractService {
+//     rpc SubtractMethod (SubtractRequest) returns (SubtractResponse) {}
+// }
+
+// message SubtractRequest {
+//     float a=1;
+//     float b=2;
+// }
+
+// message SubtractResponse {
+//     float sum=1;
+// }
+
+
+// syntax = "proto3";
+
+// package pbft;
+
+// option go_package = "github.com/your-username/pbft-consensus/proto";
+
+// The Math service definition.
+
+// service Math {
+//     // Subtracts two numbers and returns the result.
+//     rpc Subtract (SubtractRequest) returns (SubtractResponse) {}
+// }
+
+  
+message SubtractRequest {
+  int64 a = 1;
+  int64 b = 2;
+}
+
+message SubtractResponse {
+  int64 result = 1;
+}
+
+
+service PBFTService {
+  rpc ProcessComputation (ComputationRequest) returns (Result);
+  rpc SubtractMethod (SubtractRequest) returns (SubtractResponse) {}
+}
+
+message ComputationRequest {
+  
+  enum OperationType {
+    SUBTRACT = 0;    
+  }
+
+  OperationType operation = 1;
+  double operand1 = 2;
+  double operand2 = 3;
+}
+message Result {
+  int64 sequence = 1;
+  double value = 2;
+}
+message ComputationResponse {     
+  double result = 1;
+}
+
+message PrePrepareMessage {
+  int64 SenderID = 1;
+  int64 View = 2;
+  int64 Sequence = 3;
+  ComputationRequest Operation = 4;
+}
+
+message PrepareMessage {
+  int64 SenderID = 1;
+  int64 View = 2;
+  int64 Sequence = 3;
+  ComputationRequest Operation = 4;
+}
+
+message CommitMessage {
+  int64 SenderID = 1;
+  int64 View = 2;
+  int64 Sequence = 3;
+  ComputationRequest Operation = 4;
+}
+
+
+message Empty {}
+
+message HealthCheckRequest {
+  string service = 1;
+}
+ 
+message HealthCheckResponse {
+  enum ServingStatus {
+    UNKNOWN = 0;
+    SERVING = 1;
+    NOT_SERVING = 2;
+    SERVICE_UNKNOWN = 3;  // Used only by the Watch method.
+  }
+  ServingStatus status = 1;
+}
+ 
+service Health {
+  rpc Check(HealthCheckRequest) returns (HealthCheckResponse);
+ 
+  rpc Watch(HealthCheckRequest) returns (stream HealthCheckResponse);
+}
